@@ -16,13 +16,15 @@
   const isBaiduSearch = /^https:\/\/www\.baidu\.com\/s\?./.test(href);
 
   if (isBaiduSearch) {
-    hideBaiduSearchAd();
+    baidu_hideSearchAd();
+    baidu_optimizePageStyle();
   }
 
+// ========================================================================
   /**
    * 百度搜索去掉广告
    */
-  function hideBaiduSearchAd() {
+  function baidu_hideSearchAd() {
     const hideBaiduAd = () => {
       const contentDom = document.querySelector("#content_left");
       const containers = contentDom.querySelectorAll(".c-container");
@@ -32,9 +34,7 @@
         // 判断是否有[广告文字]节点
         let hasAdLink = false;
         const textList = container.querySelectorAll("a,span") || [];
-        textList.forEach(
-          (o) => o.innerText === "广告" && (hasAdLink = true)
-        );
+        textList.forEach((o) => o.innerText === "广告" && (hasAdLink = true));
         // 满足条件，去掉当前节点
         if (hasAdIcon || hasAdLink) {
           container.parentNode.removeChild(container);
@@ -43,5 +43,17 @@
       timer = setTimeout(() => hideBaiduAd());
     };
     hideBaiduAd();
+  }
+
+  /**
+   * 优化页面表现
+   */
+  function baidu_optimizePageStyle() {
+    const fn = () => {
+      const rightDom = document.querySelector("#content_right");
+      rightDom && rightDom.setAttribute("style", "display: none!important;");
+      setTimeout(fn);
+    };
+    fn();
   }
 })();
