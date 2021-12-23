@@ -11,7 +11,6 @@
 
 (function () {
   "use strict";
-  let timer = null;
   const href = window.location.href;
   const isBaiduSearch = /^https:\/\/www\.baidu\.com\/s\?./.test(href);
 
@@ -26,8 +25,8 @@
    */
   function baidu_hideSearchAd() {
     const hideBaiduAd = () => {
-      const contentDom = document.querySelector("#content_left");
-      const containers = contentDom.querySelectorAll(".c-container");
+      const contentDom = document && document.querySelector("#content_left");
+      const containers = contentDom && contentDom.querySelectorAll(".c-container") || [];
       containers.forEach((container) => {
         // 判断是否有[广告Icon]节点
         const hasAdIcon = container.querySelector("span.ec-tuiguang");
@@ -40,7 +39,7 @@
           container.parentNode.removeChild(container);
         }
       });
-      timer = setTimeout(() => hideBaiduAd());
+      setTimeout(hideBaiduAd);
     };
     hideBaiduAd();
   }
@@ -50,7 +49,7 @@
    */
   function baidu_optimizePageStyle() {
     const fn = () => {
-      const rightDom = document.querySelector("#content_right");
+      const rightDom = document && document.querySelector("#content_right");
       rightDom && rightDom.setAttribute("style", "display: none!important;");
       setTimeout(fn);
     };
