@@ -31,12 +31,8 @@
         const hasAdIcon = container.querySelector("span.ec-tuiguang");
         // 判断是否有[广告文字]节点
         let hasAdLink = false;
-        const linkTextList = container.querySelectorAll("a") || [];
-        const spanTextList = container.querySelectorAll("span") || [];
-        linkTextList.forEach(
-          (o) => o.innerText === "广告" && (hasAdLink = true)
-        );
-        spanTextList.forEach(
+        const textList = container.querySelectorAll("a,span") || [];
+        textList.forEach(
           (o) => o.innerText === "广告" && (hasAdLink = true)
         );
         // 满足条件，去掉当前节点
