@@ -1,0 +1,41 @@
+// ==UserScript==
+// @name         自用插件
+// @namespace    self_tampermonkey_helper
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        */*
+// @icon         https://www.google.com/s2/favicons?domain=baidu.com
+// @grant        none
+// ==/UserScript==
+
+(function () {
+  "use strict";
+  let timer = null;
+  const href = window.location.href;
+  const isBaiduSearch = /^https:\/\/www\.baidu\.com\/s\?./.test(href);
+
+  // 百度搜索去掉广告
+  if (isBaiduSearch) {
+    const hideBaiduAd = () => {
+      const contentDom = document.querySelector('#content_left');
+      const containers = contentDom.querySelectorAll(".c-container");
+      containers.forEach((container) => {
+        // 判断是否有[广告Icon]节点
+        const hasAdIcon = container.querySelector("span.ec-tuiguang");
+        // 判断是否有[广告文字]节点
+        let hasAdLink = false;
+        const linkTextList = container.querySelectorAll("a") || [];
+        linkTextList.forEach(
+          (o) => o.innerText === "广告" && (hasAdLink = true)
+        );
+        // 满足条件，去掉当前节点
+        if (hasAdIcon || hasAdLink) {
+          container.parentNode.removeChild(container);
+        }
+      });
+      timer = setTimeout(() => hideBaiduAd());
+    };
+    hideBaiduAd();
+  }
+})();
